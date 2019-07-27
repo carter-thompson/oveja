@@ -1,0 +1,9 @@
+django-admin startproject oveja
+
+sudo docker pull postgres
+sudo docker run --name postgresDb -e POSTGRESS_PASSWORD=root-pw -p 5432:5432 -d postgres
+
+sudo docker pull dpage/pgadmin4
+sudo docker run -p 80:80 -e "PGADMIN_DEFAULT_EMAIL=carterthompson@gmail.com" -e "PGADMIN_DEFAULT_PASSWORD=root-pw" -d dpage/pgadmin4
+
+sudo docker inspect postgresDb

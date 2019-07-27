@@ -37,6 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # third party
+    'rest_framework',
+    'djoser',
+    # local
+    'itinerary',
 ]
 
 MIDDLEWARE = [
@@ -76,9 +81,9 @@ WSGI_APPLICATION = 'oveja.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('OVEJA_NAME', ''),
-        'USER': os.environ.get('OVEJA_USER', ''),
-        'PASSWORD': os.environ.get('OVEJA_PASSWORD', ''),
+        'NAME': os.environ.get('OVEJA_DB_NAME', ''),
+        'USER': os.environ.get('OVEJA_DB_USER', ''),
+        'PASSWORD': os.environ.get('OVEJA_DB_PASSWORD', ''),
         'HOST': 'localhost',
         'PORT': 5432,
     }
@@ -122,3 +127,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+}

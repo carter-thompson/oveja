@@ -8,24 +8,33 @@ from .serializers import ItinerarySerializer
 
 
 class BaseViewTest(APITestCase):
+    """
+    Base View Test
+    """
     client = APIClient()
 
     @staticmethod
-    def create_itinerary(title, owner, isPublished):
-        Itinerary.objects.create(title, owner, isPublished)
-
-    
+    def create_itinerary(title, owner, is_published):
+        """
+        Create itinerary object
+        """
+        Itinerary.objects.create(title=title, owner=owner, is_published=is_published)
+ 
     def setUp(self):
-        User = get_user_model()
-        self.user = User.objects.create_user(username='testuser', password='12345')
-        login = self.client.login(username='testuser', password='12345')
-        self.create_itinerary('Guide to Florida', login, False)
-        self.create_itinerary('Guide to Tokyo', login, False)
-        self.create_itinerary('Blueridge Weekend Tour', login, True)
+        """
+        Setup
+        """
+        custom_user = get_user_model()
+        user = custom_user.objects.create_user(username='testuser', password='12345')
+        self.create_itinerary('Guide to Florida', user, False)
+        self.create_itinerary('Guide to Tokyo', user, False)
+        self.create_itinerary('Blueridge Weekend Tour', user, True)
 
 
 class GetAllItinerariesTest(BaseViewTest):
-    
+    """
+    GET ALL Itineraries Test
+    """
     def test_get_all_itineraries(self):
         """
         Test that all Itinerary objects exist when we make a GET request to itinerary/ endpoint

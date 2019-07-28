@@ -16,12 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import url
-from rest_framework_simplejwt import views as jwt_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^auth/', include('djoser.urls')),
     url(r'^auth/', include('djoser.urls.jwt')),
     path('itinerary/', include('itinerary.urls')),
-
 ]

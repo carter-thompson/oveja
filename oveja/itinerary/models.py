@@ -8,7 +8,7 @@ class Itinerary(models.Model):
     """
     title = models.CharField(max_length=255, null=False)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    isPublished = models.BooleanField(default=False)
+    is_published = models.BooleanField(default=False)
 
     def __str__(self):
         return "{} - {}".format(self.title, self.owner)

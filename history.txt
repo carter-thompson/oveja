@@ -7,3 +7,7 @@ sudo docker pull dpage/pgadmin4
 sudo docker run -p 80:80 -e "PGADMIN_DEFAULT_EMAIL=carterthompson@gmail.com" -e "PGADMIN_DEFAULT_PASSWORD=root-pw" -d dpage/pgadmin4
 
 sudo docker inspect postgresDb
+
+CREATE USER oveja_user WITH PASSWORD 'oveja-pw';
+CREATE DATABASE oveja_db WITH OWNER oveja_user;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO oveja_user;

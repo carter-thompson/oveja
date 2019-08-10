@@ -1,8 +1,11 @@
-from enum import Enum
+"""
+Itinerary Models
+"""
 from django.db import models
 from django.conf import settings
 
-# Create your models here.
+from .choices import Locations
+
 class Itinerary(models.Model):
     """
     Itinerary Model
@@ -17,26 +20,6 @@ class Itinerary(models.Model):
     class Meta:
         verbose_name_plural = "Itineraries"
 
-class LocationTypes(Enum):
-    """
-    Types of Locations
-    """
-    choices = (
-        'unknown',
-        'restaurant',
-        'historical site',
-        'religous',
-        'theme park',
-        'tourist attaction',
-        'bar',
-        'stadium',
-        'beach',
-        'museum',
-        'park',
-        'hotel',
-        'hiking trail',
-    )
-
 class POI(models.Model):
     """
     Point Of Interest in an Itinerary
@@ -47,14 +30,14 @@ class POI(models.Model):
     longitude = models.FloatField(null=False)
     location_type = models.CharField(
         max_length=255,
-        choices=LocationTypes.choices,
-        default='unknown',
+        choices=Locations.CHOICES,
+        default=Locations.OTHER,
         null=False
     )
     order = models.IntegerField(null=False)
-    address = models.CharField(max_length=255, null=True)
-    image = models.CharField(max_length=255, null=True)
-    website = models.CharField(max_length=2083, null=True)
+    address = models.CharField(max_length=255, null=True, blank=False)
+    image = models.CharField(max_length=255, null=True, blank=False)
+    website = models.CharField(max_length=2083, null=True, blank=False)
 
     class Meta:
         ordering = ["order"]

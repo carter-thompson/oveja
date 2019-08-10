@@ -2,9 +2,10 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 from rest_framework.test import APITestCase, APIClient
 from rest_framework.views import status
+import json
 
-from .models import Itinerary
-from .serializers import ItinerarySerializer, POISerializer
+from ..models import Itinerary
+from ..serializers import ItinerarySerializer
 
 
 class BaseViewTest(APITestCase):
@@ -41,23 +42,27 @@ class GetAllItinerariesTest(BaseViewTest):
         """
 
         response = self.client.get(
-            reverse("itinerary-all")
+            reverse("itinerary")
         )
         expected = Itinerary.objects.all()
         serialized = ItinerarySerializer(expected, many=True)
         self.assertEqual(response.data, serialized.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-class GetAllPOIsTest(BaseViewTest):
+class PostItinerary(BaseViewTest):
     """
-    GET all Points of Interest for an Itinerary
+    Test POST itinerary
     """
-    def test_get_itinerary_points(self):
+    def test_post_itinerary(self):
         """
-        Test that all POIs are returned for a given Itinerary
+        Test POST creates a new Itinerary
         """
-        response = self.client.get('/itinerary/1')
-        expected = Itinerary.objects.get(id=1)
-        serialized = POISerializer(expected, many=True)
-        self.assertEqual(response.data, serialized.data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        custom_user = get_user_model()
+        user = custom_user.objects.create_user(username='testuser1', password='12345')
+
+        data = {"title": "Test Itinerary", "owner": user.id, "is_published": False}
+        response = self.client.post(reverse('itinerary'),
+                                    data=json.dumps(data),
+                                    content_type='application/json')
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
